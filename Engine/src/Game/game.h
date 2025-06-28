@@ -28,5 +28,6 @@ namespace Engine
 		std::unique_ptr<WindowsWindow> m_window;
 
 		VertexArrayObjectPtr m_triangleVAO;
+		ShaderProgramPtr m_shader;
 	};
 }

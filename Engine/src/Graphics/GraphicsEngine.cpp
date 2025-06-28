@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "Graphics/vertexarrayobject.h"
+#include "Graphics/shaderprogram.h"
 
 
 namespace Engine
@@ -88,8 +89,18 @@ namespace Engine
 		glBindVertexArray(vao->GetId());
 	}
 
-	VertexArrayObjectPtr GraphicsEngine::CreateVertexArrayObject(const VertexBufferData& data)
+	void GraphicsEngine::SetShaderProgram(const ShaderProgramPtr& program)
+	{
+		glUseProgram(program->GetId());
+	}
+
+	VertexArrayObjectPtr GraphicsEngine::CreateVertexArrayObject(const VertexBufferDesc& data)
 	{
 		return std::make_shared<VertexArrayObject>(data);
+	}
+
+	ShaderProgramPtr GraphicsEngine::CreateShaderProgram(const ShaderProgramDesc& desc)
+	{
+		return std::make_shared<ShaderProgram>(desc);
 	}
 }

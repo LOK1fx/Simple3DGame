@@ -7,7 +7,7 @@ namespace Engine
 	class VertexArrayObject
 	{
 	public:
-		VertexArrayObject(const VertexBufferData& data);
+		VertexArrayObject(const VertexBufferDesc& data);
 		~VertexArrayObject();
 
 		ui32 GetId() const { return m_vertexArrayObjectId; }
@@ -16,7 +16,7 @@ namespace Engine
 	private:
 		ui32 m_vertexBufferId = 0;
 		ui32 m_vertexArrayObjectId = 0;
-		VertexBufferData m_vertexBufferData;
+		VertexBufferDesc m_vertexBufferData;
 	};
 
 }

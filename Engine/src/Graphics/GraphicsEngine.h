@@ -14,9 +14,12 @@ namespace Engine
 		void Clear(const Vec4& color);
 		void DrawTriangles(ui32 vertexCount, ui32 offset);
 		void SetViewport(const Rect& size);
-		void SetVertexArrayObject(const VertexArrayObjectPtr& vao);
 
-		VertexArrayObjectPtr CreateVertexArrayObject(const VertexBufferData& data);
+		void SetVertexArrayObject(const VertexArrayObjectPtr& vao);
+		void SetShaderProgram(const ShaderProgramPtr& program);
+
+		VertexArrayObjectPtr CreateVertexArrayObject(const VertexBufferDesc& data);
+		ShaderProgramPtr CreateShaderProgram(const ShaderProgramDesc& desc);
 	};
 
 }

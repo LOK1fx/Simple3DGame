@@ -27,23 +27,43 @@ namespace Engine
 	{
 		const f32 triangleVertices[] = {
 			-0.5f, -0.5f, 0.0f,
+			1,	0,	0,
+
 			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f
+			0,	1,	0,
+			
+			0.0f, 0.5f, 0.0f,
+			0,	0, 1,
 		};
 
-		VertexBufferData data = {};
+		VertexAttribute attributeList[] = {
+			3, // position
+			3 // color
+		};
+
+		VertexBufferDesc data = {};
 		data.verticesList = (void*)triangleVertices;
-		data.vertexSize = sizeof(f32) * 3;
+		data.vertexSize = sizeof(f32) * (3+3);
 		data.listSize = 3;
+		data.attributeList = attributeList;
+		data.attributesListSize = 2;
 
 
 		m_triangleVAO = m_graphicsEngine->CreateVertexArrayObject(data);
+		
+		ShaderProgramDesc shaderDesc = {};
+		shaderDesc.vertexShaderFilePath = L"Assets/Shaders/BasicShader.vert";
+		shaderDesc.fragmentShaderFilePath = L"Assets/Shaders/BasicShader.frag";
+
+
+		m_shader = m_graphicsEngine->CreateShaderProgram(shaderDesc);
 	}
 
 	void Game::OnUpdate()
 	{
 		m_graphicsEngine->Clear(Vec4(0.4f, 0.55f, 0.85f, 0));
 		m_graphicsEngine->SetVertexArrayObject(m_triangleVAO);
+		m_graphicsEngine->SetShaderProgram(m_shader);
 		m_graphicsEngine->DrawTriangles(m_triangleVAO->GetVertexBufferSize(), 0);
 
 		m_window->Present(false);
