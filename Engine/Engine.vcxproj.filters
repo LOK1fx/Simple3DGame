@@ -21,7 +21,7 @@
     <ClInclude Include="src\Game\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GraphicsEngine.h">
+    <ClInclude Include="src\Graphics\graphicsengine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Math\vector4.h">
@@ -44,7 +44,7 @@
     <ClCompile Include="src\Game\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GraphicsEngine.cpp">
+    <ClCompile Include="src\Graphics\graphicsengine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vendor\glad\src\glad.c">

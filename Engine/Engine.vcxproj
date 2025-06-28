@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="src\Graphics\graphicsengine.h" />
     <ClInclude Include="src\Game\game.h" />
     <ClInclude Include="src\Math\rect.h" />
     <ClInclude Include="src\prerequisites.h" />
@@ -160,7 +160,7 @@
     <ClInclude Include="src\Graphics\vertexarrayobject.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="src\Graphics\graphicsengine.cpp" />
     <ClCompile Include="src\Game\game.cpp" />
     <ClCompile Include="src\Window\window.cpp" />
     <ClCompile Include="vendor\glad\src\glad.c" />
