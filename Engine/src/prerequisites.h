@@ -1,8 +1,11 @@
 #pragma once
 #include <memory>
+#include "core.h"
 
 namespace Engine
 {
+
+
 	class VertexArrayObject;
 	class ShaderProgram;
 
