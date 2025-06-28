@@ -6,7 +6,9 @@ namespace Engine
 {
 	VertexArrayObject::VertexArrayObject(const VertexBufferDesc& data)
 	{
-		//ENGINE_ASSERT(data.listSize, "vertexSize is NULL");
+		ENGINE_ASSERT(data.listSize, "listSize is NULL");
+		ENGINE_ASSERT(data.vertexSize, "vertexSize is NULL");
+		ENGINE_ASSERT(data.verticesList, "verticesList is NULL");
 
 		glGenVertexArrays(1, &m_vertexArrayObjectId);
 		glBindVertexArray(m_vertexArrayObjectId);

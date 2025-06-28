@@ -16,7 +16,7 @@ throw std::runtime_error(m.str());\
 
 
 #ifdef _DEBUG
-	#define ENGINE_ASSERT(x, msg) { if(!(x)) { OGL3D_ERROR("Assertion failed: {0}", msg); __debugbreak(); } }
+	#define ENGINE_ASSERT(x, msg) { if(!(x)) { OGL3D_ERROR(msg); __debugbreak(); } }
 #else
 	#define ENGINE_ASSERT(x, msg)
 #endif

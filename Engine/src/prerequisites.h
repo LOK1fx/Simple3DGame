@@ -7,14 +7,16 @@ namespace Engine
 
 
 	class VertexArrayObject;
+	class UniformBuffer;
 	class ShaderProgram;
 
 	typedef std::shared_ptr<VertexArrayObject> VertexArrayObjectPtr;
+	typedef std::shared_ptr<UniformBuffer> UniformBufferPtr;
 	typedef std::shared_ptr<ShaderProgram> ShaderProgramPtr;
 
 
 	typedef float f32;
-	typedef float i32;
+	typedef int i32;
 	typedef unsigned int ui32;
 	typedef unsigned char uc16;
 
@@ -37,6 +39,17 @@ namespace Engine
 	{
 		const wchar_t* vertexShaderFilePath;
 		const wchar_t* fragmentShaderFilePath;
+	};
+
+	struct UniformBufferDesc
+	{
+		ui32 size = 0;
+	};
+
+	enum TriangleType
+	{
+		TriangleList = 0,
+		TriangleStrip,
 	};
 
 	enum ShaderType

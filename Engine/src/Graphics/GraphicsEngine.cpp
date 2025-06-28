@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "Graphics/vertexarrayobject.h"
+#include "Graphics/uniformbuffer.h"
 #include "Graphics/shaderprogram.h"
 
 
@@ -53,10 +54,10 @@ namespace Engine
 		wglMakeCurrent(deviceContext, context);
 
 		if (!gladLoadWGL(deviceContext))
-			throw std::runtime_error("failed gladLoadWGL");
+			OGL3D_ERROR("failed gladLoadWGL");
 
 		if (!gladLoadGL())
-			throw std::runtime_error("failed gladLoadGL");
+			OGL3D_ERROR("failed gladLoadGL");
 
 		wglMakeCurrent(deviceContext, 0);
 		wglDeleteContext(context);
@@ -74,9 +75,27 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void GraphicsEngine::DrawTriangles(ui32 vertexCount, ui32 offset)
+	void GraphicsEngine::DrawTriangles(const TriangleType& type, ui32 vertexCount, ui32 offset)
 	{
-		glDrawArrays(GL_TRIANGLES, offset, vertexCount);
+		int glTriangleType = GL_TRIANGLES;
+
+		switch (type)
+		{
+		case TriangleList:
+		{
+			glTriangleType = GL_TRIANGLES;
+			break;
+		}
+		case TriangleStrip:
+		{
+			glTriangleType = GL_TRIANGLE_STRIP;
+			break;
+		}
+		default:
+			break;
+		}
+
+		glDrawArrays(glTriangleType, offset, vertexCount);
 	}
 
 	void GraphicsEngine::SetViewport(const Rect& size)
@@ -89,6 +108,11 @@ namespace Engine
 		glBindVertexArray(vao->GetId());
 	}
 
+	void GraphicsEngine::SetUniformBuffer(const UniformBufferPtr& buffer, ui32 slot)
+	{
+		glBindBufferBase(GL_UNIFORM_BUFFER, slot, buffer->GetId());
+	}
+
 	void GraphicsEngine::SetShaderProgram(const ShaderProgramPtr& program)
 	{
 		glUseProgram(program->GetId());
@@ -97,6 +121,11 @@ namespace Engine
 	VertexArrayObjectPtr GraphicsEngine::CreateVertexArrayObject(const VertexBufferDesc& data)
 	{
 		return std::make_shared<VertexArrayObject>(data);
+	}
+
+	UniformBufferPtr GraphicsEngine::CreateUniformBuffer(const UniformBufferDesc& desc)
+	{
+		return std::make_shared<UniformBuffer>(desc);
 	}
 
 	ShaderProgramPtr GraphicsEngine::CreateShaderProgram(const ShaderProgramDesc& desc)

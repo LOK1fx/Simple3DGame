@@ -13,9 +13,11 @@ namespace Engine
 		~ShaderProgram();
 	
 		ui32 GetId() const { return m_programId; }
+
+		void SetUniformBufferSlot(const char* name, ui32 slot);
 	private:
 		void Attach(const wchar_t* shaderFilePath, const ShaderType& type);
-		void Link();
+		void Link() const;
 
 		ui32 m_programId = 0;
 		ui32 m_attachedShaders[SHADERS_LEN] = {};
