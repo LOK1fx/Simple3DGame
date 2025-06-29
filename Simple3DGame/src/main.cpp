@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Game/game.h"
+#include "Game.h"
 
 int main()
 {
@@ -8,7 +8,7 @@ int main()
 
 	try
 	{
-		Engine::Game game;
+		Game game;
 		game.Run();
 	}
 	catch (const std::exception& e)

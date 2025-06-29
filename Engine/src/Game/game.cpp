@@ -8,6 +8,8 @@
 #include "Math/matrix44.h"
 #include "Math/vector2.h"
 
+#include "Entity/entitysystem.h"
+
 #include <Windows.h>
 #include <iostream>
 
@@ -29,6 +31,7 @@ namespace Engine
 	{
 		m_graphicsEngine = std::make_unique<GraphicsEngine>();
 		m_window = std::make_unique<WindowsWindow>();
+		m_entitySystem = std::make_unique<EntitySystem>();
 
 		m_window->MakeCurrentContext();
 
@@ -161,7 +164,7 @@ namespace Engine
 		m_shaderProgram->SetUniformBufferSlot("UniformData", 0);
 	}
 
-	void Game::OnUpdate()
+	void Game::OnUpdateInternal()
 	{
 		auto currentTime = std::chrono::system_clock::now();
 		auto elsapsedSeconds = std::chrono::duration<double>();
@@ -173,6 +176,13 @@ namespace Engine
 		m_previousTime = currentTime;
 
 		auto deltaTime = (f32)elsapsedSeconds.count();
+
+
+		OnUpdate(deltaTime);
+		m_entitySystem->Update(deltaTime);
+
+
+
 
 		m_scale += 3.14f * 0.5f * deltaTime;
 		auto currentScale = abs(sin(m_scale));
@@ -222,7 +232,6 @@ namespace Engine
 		m_graphicsEngine->SetVertexArrayObject(m_polygonVAO);
 		m_graphicsEngine->SetUniformBuffer(m_uniformBuffer, 0);
 		m_graphicsEngine->SetShaderProgram(m_shaderProgram);
-		/*m_graphicsEngine->DrawTriangles(TriangleStrip, m_polygonVAO->GetVertexBufferSize(), 0);*/
 		m_graphicsEngine->DrawIndexedTriangles(TriangleType::TriangleList, 36);
 
 		m_window->Present(false);
@@ -251,7 +260,7 @@ namespace Engine
 				DispatchMessage(&message);
 			}
 
-			OnUpdate();
+			OnUpdateInternal();
 		}
 
 		OnQuit();

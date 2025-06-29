@@ -151,6 +151,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine.h" />
+    <ClInclude Include="src\Entity\entity.h" />
+    <ClInclude Include="src\Entity\entitysystem.h" />
     <ClInclude Include="src\core.h" />
     <ClInclude Include="src\Graphics\shaderprogram.h" />
     <ClInclude Include="src\Graphics\graphicsengine.h" />
@@ -166,6 +169,8 @@
     <ClInclude Include="src\Graphics\uniformbuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Entity\entity.cpp" />
+    <ClCompile Include="src\Entity\entitysystem.cpp" />
     <ClCompile Include="src\Graphics\shaderprogram.cpp" />
     <ClCompile Include="src\Graphics\graphicsengine.cpp" />
     <ClCompile Include="src\Game\game.cpp" />
