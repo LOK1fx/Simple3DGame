@@ -11,8 +11,8 @@ namespace Engine
 	{
 		m_programId = glCreateProgram();
 
-		Attach(desc.vertexShaderFilePath, VertexShader);
-		Attach(desc.fragmentShaderFilePath, FragmentShader);
+		Attach(desc.vertexShaderFilePath, ShaderType::VertexShader);
+		Attach(desc.fragmentShaderFilePath, ShaderType::FragmentShader);
 
 		Link();
 	}
@@ -57,12 +57,12 @@ namespace Engine
 		ui32 shaderId = 0;
 		switch (type)
 		{
-		case VertexShader:
+		case ShaderType::VertexShader:
 		{
 			shaderId = glCreateShader(GL_VERTEX_SHADER);
 			break;
 		}
-		case FragmentShader:
+		case ShaderType::FragmentShader:
 		{
 			shaderId = glCreateShader(GL_FRAGMENT_SHADER);
 			break;
@@ -86,7 +86,7 @@ namespace Engine
 		}
 
 		glAttachShader(m_programId, shaderId);
-		m_attachedShaders[type] = shaderId;
+		m_attachedShaders[(ui32)type] = shaderId;
 
 		OGL3D_INFO("ShaderProgram | " << shaderFilePath << " compiled successfully.");
 	}

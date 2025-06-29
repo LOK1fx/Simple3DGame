@@ -35,6 +35,12 @@ namespace Engine
 		ui32 attributesListSize = 0;
 	};
 
+	struct IndexBufferDesc
+	{
+		void* indicesList = nullptr;
+		ui32 listSize = 0;
+	};
+
 	struct ShaderProgramDesc
 	{
 		const wchar_t* vertexShaderFilePath;
@@ -46,13 +52,27 @@ namespace Engine
 		ui32 size = 0;
 	};
 
-	enum TriangleType
+
+	enum class CullType
+	{
+		BackFace = 0,
+		FrontFace,
+		Both
+	};
+
+	enum class WindingOrderType
+	{
+		ClockWise = 0,
+		CounterClockWise
+	};
+
+	enum class TriangleType
 	{
 		TriangleList = 0,
 		TriangleStrip,
 	};
 
-	enum ShaderType
+	enum class ShaderType
 	{
 		VertexShader = 0,
 		FragmentShader

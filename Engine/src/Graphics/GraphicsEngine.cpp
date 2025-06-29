@@ -75,18 +75,70 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
+	void GraphicsEngine::SetFaceCulling(const CullType& type)
+	{
+		auto cullType = GL_BACK;
+
+		switch (type)
+		{
+		case CullType::FrontFace:
+		{
+			cullType = GL_FRONT;
+			break;
+		}
+		case CullType::BackFace:
+		{
+			cullType = GL_BACK;
+			break;
+		}
+		case CullType::Both:
+		{
+			cullType = GL_FRONT_AND_BACK;
+			break;
+		}
+		default:
+			break;
+		}
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(cullType);
+	}
+
+	void GraphicsEngine::SetWindingOrder(const WindingOrderType& type)
+	{
+		auto orderType = GL_CW;
+
+		switch (type)
+		{
+		case WindingOrderType::ClockWise:
+		{
+			orderType = GL_CW;
+			break;
+		}
+		case WindingOrderType::CounterClockWise:
+		{
+			orderType = GL_CCW;
+			break;
+		}
+		default:
+			break;
+		}
+
+		glFrontFace(orderType);
+	}
+
 	void GraphicsEngine::DrawTriangles(const TriangleType& type, ui32 vertexCount, ui32 offset)
 	{
 		int glTriangleType = GL_TRIANGLES;
 
 		switch (type)
 		{
-		case TriangleList:
+		case TriangleType::TriangleList:
 		{
 			glTriangleType = GL_TRIANGLES;
 			break;
 		}
-		case TriangleStrip:
+		case TriangleType::TriangleStrip:
 		{
 			glTriangleType = GL_TRIANGLE_STRIP;
 			break;
@@ -96,6 +148,29 @@ namespace Engine
 		}
 
 		glDrawArrays(glTriangleType, offset, vertexCount);
+	}
+
+	void GraphicsEngine::DrawIndexedTriangles(const TriangleType& type, ui32 indicesCount)
+	{
+		int glTriangleType = GL_TRIANGLES;
+
+		switch (type)
+		{
+		case TriangleType::TriangleList:
+		{
+			glTriangleType = GL_TRIANGLES;
+			break;
+		}
+		case TriangleType::TriangleStrip:
+		{
+			glTriangleType = GL_TRIANGLE_STRIP;
+			break;
+		}
+		default:
+			break;
+		}
+
+		glDrawElements(glTriangleType, indicesCount, GL_UNSIGNED_INT, nullptr);
 	}
 
 	void GraphicsEngine::SetViewport(const Rect& size)
@@ -121,6 +196,11 @@ namespace Engine
 	VertexArrayObjectPtr GraphicsEngine::CreateVertexArrayObject(const VertexBufferDesc& data)
 	{
 		return std::make_shared<VertexArrayObject>(data);
+	}
+
+	VertexArrayObjectPtr GraphicsEngine::CreateVertexArrayObject(const VertexBufferDesc& vbDesc, const IndexBufferDesc& ibDesc)
+	{
+		return std::make_shared<VertexArrayObject>(vbDesc, ibDesc);
 	}
 
 	UniformBufferPtr GraphicsEngine::CreateUniformBuffer(const UniformBufferDesc& desc)

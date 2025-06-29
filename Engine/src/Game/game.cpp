@@ -5,6 +5,8 @@
 #include "Graphics/vertexarrayobject.h"
 #include "Graphics/shaderprogram.h"
 #include "Graphics/uniformbuffer.h"
+#include "Math/matrix44.h"
+#include "Math/vector2.h"
 
 #include <Windows.h>
 #include <iostream>
@@ -13,7 +15,14 @@ namespace Engine
 {
 	struct UniformData
 	{
-		f32 scale;
+		Matrix44 world;
+		Matrix44 projection;
+	};
+
+	struct Vertex
+	{
+		Vec3 position;
+		Vec2 texcoord;
 	};
 
 	Game::Game()
@@ -32,33 +41,109 @@ namespace Engine
 
 	void Game::OnCreate()
 	{
-		const f32 polygonVertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			1,	0,	0,
+		Vec3 positionsList[] = {
+			// Front face
+			Vec3(-0.5f, -0.5f, -0.5f),
+			Vec3(-0.5f, 0.5f, -0.5f),
+			Vec3(0.5f, 0.5f, -0.5f),
+			Vec3(0.5f, -0.5f, -0.5f),
 
-			-0.5f, 0.5f, 0.0f,
-			0,	1,	0,
-			
-			0.5f, -0.5f, 0.0f,
-			0,	0, 1,
-
-			0.5f, 0.5f, 0.0f,
-			1,	1, 0,
+			// Back face
+			Vec3(0.5f, -0.5f, 0.5f),
+			Vec3(0.5f, 0.5f, 0.5f),
+			Vec3(-0.5f, 0.5f, 0.5f),
+			Vec3(-0.5f, -0.5f, 0.5f),
 		};
+
+		Vec2 texcoordList[] = {
+			Vec2(0, 0),
+			Vec2(0, 1),
+			Vec2(1, 0),
+			Vec2(1, 1),
+		};
+
+		Vertex verticesList[] = {
+			// Front
+			{positionsList[0], texcoordList[1] },
+			{positionsList[1], texcoordList[0] },
+			{positionsList[2], texcoordList[2] },
+			{positionsList[3], texcoordList[3] },
+
+			// Back
+			{positionsList[4], texcoordList[1] },
+			{positionsList[5], texcoordList[0] },
+			{positionsList[6], texcoordList[2] },
+			{positionsList[7], texcoordList[3] },
+
+			// Top
+			{positionsList[1], texcoordList[1] },
+			{positionsList[6], texcoordList[0] },
+			{positionsList[5], texcoordList[2] },
+			{positionsList[2], texcoordList[3] },
+
+			// Bottom
+			{positionsList[7], texcoordList[1] },
+			{positionsList[0], texcoordList[0] },
+			{positionsList[3], texcoordList[2] },
+			{positionsList[4], texcoordList[3] },
+
+			// Right
+			{positionsList[3], texcoordList[1] },
+			{positionsList[2], texcoordList[0] },
+			{positionsList[5], texcoordList[2] },
+			{positionsList[4], texcoordList[3] },
+
+			// Left
+			{positionsList[7], texcoordList[1] },
+			{positionsList[6], texcoordList[0] },
+			{positionsList[1], texcoordList[2] },
+			{positionsList[0], texcoordList[3] },
+		};
+
+		ui32 indicesList[] = {
+			// Front
+			0, 1, 2,
+			2, 3, 0,
+
+			// Back
+			4, 5, 6,
+			6, 7, 4,
+
+			// Top
+			8, 9, 10,
+			10, 11, 8,
+
+			// Bottom
+			12, 13, 14,
+			14, 15, 12,
+
+			// Right
+			16, 17, 18,
+			18, 19, 16,
+
+			// Left
+			20, 21, 22,
+			22, 23, 20
+		};
+
 
 		VertexAttribute attributeList[] = {
-			3, // position
-			3 // color
+			sizeof(Vec3) / sizeof(f32), // position
+			sizeof(Vec2) / sizeof(f32), // texcoord
 		};
 
-		VertexBufferDesc data = {};
-		data.verticesList = (void*)polygonVertices;
-		data.vertexSize = sizeof(f32) * (3+3);
-		data.listSize = 4;
-		data.attributeList = attributeList;
-		data.attributesListSize = 2;
+		VertexBufferDesc vbDesc = {};
+		vbDesc.verticesList = (void*)verticesList;
+		vbDesc.vertexSize = sizeof(Vertex);
+		vbDesc.listSize = sizeof(verticesList)/sizeof(Vertex);
+		vbDesc.attributeList = attributeList;
+		vbDesc.attributesListSize = sizeof(attributeList)/sizeof(VertexAttribute);
 
-		m_polygonVAO = m_graphicsEngine->CreateVertexArrayObject(data);
+		IndexBufferDesc ibDesc = {};
+		ibDesc.indicesList = indicesList;
+		ibDesc.listSize = sizeof(indicesList);
+
+		m_polygonVAO = m_graphicsEngine->CreateVertexArrayObject(vbDesc, ibDesc);
 		
 		
 		UniformBufferDesc uBufferDesc = {};
@@ -92,16 +177,53 @@ namespace Engine
 		m_scale += 3.14f * 0.5f * deltaTime;
 		auto currentScale = abs(sin(m_scale));
 
+		Matrix44 world;
+		Matrix44 projection;
+		Matrix44 temp;
 
-		UniformData data = { currentScale };
+		// Scale
+		temp.SetIdentity();
+		temp.SetScale(Vec3(currentScale, currentScale, currentScale));
+		world *= temp;
+
+
+		// Rotation
+		temp.SetIdentity();
+		temp.SetRotationZ(m_scale * 0.5f);
+		world *= temp;
+
+		temp.SetIdentity();
+		temp.SetRotationY(m_scale * 1);
+		world *= temp;
+
+		temp.SetIdentity();
+		temp.SetRotationX(m_scale * 1);
+		world *= temp;
+
+
+		// Translation
+		temp.SetIdentity();
+		temp.SetTranslation(Vec3(0, 0, 0));
+		world *= temp;
+
+		Rect windowRect = m_window->GetInnerSize();
+		f32 rectFactor = 0.004f;
+		projection.SetOrthoLH(windowRect.Width * rectFactor, windowRect.Height * rectFactor, 0.03f, 1000);
+
+
+		UniformData data = { world, projection };
 		m_uniformBuffer->SetData(&data);
 
 		m_graphicsEngine->Clear(Vec4(0.4f, 0.55f, 0.85f, 0));
 
+		m_graphicsEngine->SetFaceCulling(CullType::BackFace);
+		m_graphicsEngine->SetWindingOrder(WindingOrderType::ClockWise);
+
 		m_graphicsEngine->SetVertexArrayObject(m_polygonVAO);
 		m_graphicsEngine->SetUniformBuffer(m_uniformBuffer, 0);
 		m_graphicsEngine->SetShaderProgram(m_shaderProgram);
-		m_graphicsEngine->DrawTriangles(TriangleStrip, m_polygonVAO->GetVertexBufferSize(), 0);
+		/*m_graphicsEngine->DrawTriangles(TriangleStrip, m_polygonVAO->GetVertexBufferSize(), 0);*/
+		m_graphicsEngine->DrawIndexedTriangles(TriangleType::TriangleList, 36);
 
 		m_window->Present(false);
 	}

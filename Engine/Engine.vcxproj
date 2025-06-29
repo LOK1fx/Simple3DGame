@@ -155,7 +155,10 @@
     <ClInclude Include="src\Graphics\shaderprogram.h" />
     <ClInclude Include="src\Graphics\graphicsengine.h" />
     <ClInclude Include="src\Game\game.h" />
+    <ClInclude Include="src\Math\matrix44.h" />
     <ClInclude Include="src\Math\rect.h" />
+    <ClInclude Include="src\Math\vector2.h" />
+    <ClInclude Include="src\Math\vector3.h" />
     <ClInclude Include="src\prerequisites.h" />
     <ClInclude Include="src\Window\window.h" />
     <ClInclude Include="src\Math\vector4.h" />

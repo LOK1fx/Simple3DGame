@@ -14,7 +14,10 @@ namespace Engine
 		void MakeCurrentContext();
 		void Present(bool vsync);
 
-		Rect GetInnerSize();
+		Rect GetInnerSize() const
+		{
+			return Rect(m_width, m_height);
+		}
 	private:
 		ui32 m_width = 1024;
 		ui32 m_height = 768;

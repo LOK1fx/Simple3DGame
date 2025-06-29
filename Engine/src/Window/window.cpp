@@ -107,12 +107,4 @@ namespace Engine
 		wglSwapIntervalEXT(vsync);
 		wglSwapLayerBuffers(GetDC(HWND(m_handle)), WGL_SWAP_MAIN_PLANE);
 	}
-
-	Rect WindowsWindow::GetInnerSize()
-	{
-		RECT rect = {};
-		GetClientRect((HWND)m_handle, &rect);
-
-		return Rect(rect.right-rect.left, rect.bottom-rect.top);
-	}
 }

@@ -1,20 +1,22 @@
 #version 410 core
 
-uniform UniformData
+layout (row_major) uniform UniformData
 {
-	float scale;
+	mat4 world;
+	mat4 projection;
 };
 
 
 layout(location = 0) in vec3 position;
-layout(location = 1) in vec3 color;
+layout(location = 1) in vec2 texcoord;
 
-layout(location = 0) out vec3 outColor;
+layout(location = 0) out vec3 vertOutColor;
 
 void main()
 {
-	gl_Position.xyz = position * scale;
-	gl_Position.w = 1.0;
+	vec4 pos = vec4(position, 1) * world;
+	pos = pos * projection;
 
-	outColor = color;
+	gl_Position = pos;
+	vertOutColor = vec3(texcoord.x, texcoord.y, 0);
 }
