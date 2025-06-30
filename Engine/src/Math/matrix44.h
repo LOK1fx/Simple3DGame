@@ -31,6 +31,15 @@ namespace Engine
 			Matrix[2][2] = scale.Z;
 		}
 
+		/*inline Vec3 GetScale() const
+		{
+			return Vec3(
+				Matrix[0][0],
+				Matrix[1][1],
+				Matrix[2][2]
+			);
+		}*/
+
 		void SetTranslation(const Vec3& translation)
 		{
 			Matrix[3][0] = translation.X;
@@ -38,6 +47,14 @@ namespace Engine
 			Matrix[3][2] = translation.Z;
 		}
 
+		/*inline Vec3 GetTranslation() const
+		{
+			return Vec3(
+				Matrix[3][0],
+				Matrix[3][1],
+				Matrix[3][2]
+			);
+		}*/
 
 		void SetRotationX(f32 x)
 		{

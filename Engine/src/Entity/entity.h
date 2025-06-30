@@ -13,14 +13,6 @@ namespace Engine
 		virtual ~Entity();
 
 		void Release();
-		void Release(Entity*& entity)
-		{
-			if (entity)
-			{
-				entity->Release();
-				entity = nullptr;
-			}
-		}
 
 		EntitySystem* GetEntitySystem() const { return m_entitySystem; }
 

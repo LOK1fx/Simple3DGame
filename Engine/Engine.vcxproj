@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Entity\actor.h" />
     <ClInclude Include="src\engine.h" />
     <ClInclude Include="src\Entity\entity.h" />
     <ClInclude Include="src\Entity\entitysystem.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="src\Game\game.h" />
     <ClInclude Include="src\Math\matrix44.h" />
     <ClInclude Include="src\Math\rect.h" />
+    <ClInclude Include="src\Math\transform.h" />
     <ClInclude Include="src\Math\vector2.h" />
     <ClInclude Include="src\Math\vector3.h" />
     <ClInclude Include="src\prerequisites.h" />
@@ -169,6 +171,7 @@
     <ClInclude Include="src\Graphics\uniformbuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Entity\actor.cpp" />
     <ClCompile Include="src\Entity\entity.cpp" />
     <ClCompile Include="src\Entity\entitysystem.cpp" />
     <ClCompile Include="src\Graphics\shaderprogram.cpp" />

@@ -23,7 +23,7 @@ namespace Engine
 
 	protected:
 		virtual void OnCreate();
-		virtual void OnUpdate(f32 deltaTime) { }
+		virtual void OnUpdate(f32 deltaTime) = 0;
 		virtual void OnQuit();
 
 		bool m_isRunning = true;
